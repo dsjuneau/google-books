@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Nav from "./components/Nav";
 import Info from "./components/Info";
@@ -10,12 +11,15 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
-        <Nav />
-        <Info />
-        <Search />
-        <Saved />
-      </div>
+      <Router>
+        <div>
+          <Nav />
+          <Info />
+          <Route path="/" exact component={Saved} />
+          <Route path="/search/" component={Search} />
+          <Route path="/saved/" component={Saved} />
+        </div>
+      </Router>
     );
   }
 }

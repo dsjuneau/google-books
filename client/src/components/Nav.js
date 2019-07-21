@@ -1,22 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Link to="/" className="navbar-brand">
         Book Search
-      </a>
+      </Link>
 
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/saved">
-            Saved<span class="sr-only">(current)</span>
-          </a>
+      <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
+          <Link to="/saved/" className="nav-link">
+            Saved
+          </Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/search">
+          <Link to="/search/" className="nav-link">
             Search
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>

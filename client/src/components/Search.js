@@ -8,7 +8,7 @@ export default function Search() {
         <div className="form-group-inline row">
           <div className="col-10">
             <input
-              class="form-control mx-3"
+              className="form-control mx-3"
               type="search"
               placeholder="Search"
               aria-label="Search"

@@ -24,7 +24,7 @@ export default function Saved() {
           <img
             src="http://placekitten.com/g/100/100"
             alt="..."
-            class="img-thumbnail float-left"
+            className="img-thumbnail float-left"
           />
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
           dignissimos, est dolorem, quidem repudiandae fugiat debitis architecto
