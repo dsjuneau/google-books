@@ -8,8 +8,19 @@ class Search extends React.Component {
     e.preventDefault();
     axios
       .post("/api/books/search", { term: this.state.searchTerm })
-      .then(function(response) {
-        console.log(response);
+      .then(response => {
+        let results = [];
+        response.data.forEach(book => {
+          results.push({
+            title: book.volumeInfo.title,
+            authors: book.volumeInfo.authors,
+            description: book.volumeInfo.description,
+            image: book.volumeInfo.imageLinks.thumbnail,
+            link: book.volumeInfo.previewLink
+          });
+        });
+        this.setState({ results });
+        console.log(this.state.results);
       })
       .catch(function(error) {
         console.log(error);
