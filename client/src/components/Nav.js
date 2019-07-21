@@ -14,7 +14,7 @@ export default function Nav() {
             Saved
           </Link>
         </li>
-        <li class="nav-item">
+        <li className="nav-item">
           <Link to="/search/" className="nav-link">
             Search
           </Link>
