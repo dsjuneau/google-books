@@ -1,14 +1,23 @@
-import React from "react";
-import "./App.css";
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div>
-      <header>
-        <h1>Landing page</h1>
-      </header>
-    </div>
-  );
+import Nav from "./components/Nav";
+import Info from "./components/Info";
+import Search from "./components/Search";
+import Saved from "./components/Saved";
+
+export class App extends Component {
+  state = {};
+
+  render() {
+    return (
+      <div>
+        <Nav />
+        <Info />
+        <Search />
+        <Saved />
+      </div>
+    );
+  }
 }
 
 export default App;
