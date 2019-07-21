@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import SearchItems from "./SearchItems";
 
 class Search extends React.Component {
   state = { searchTerm: "you don't know js", results: [] };
@@ -10,8 +11,10 @@ class Search extends React.Component {
       .post("/api/books/search", { term: this.state.searchTerm })
       .then(response => {
         let results = [];
-        response.data.forEach(book => {
+
+        response.data.forEach((book, i) => {
           results.push({
+            id: i,
             title: book.volumeInfo.title,
             authors: book.volumeInfo.authors,
             description: book.volumeInfo.description,
@@ -20,11 +23,14 @@ class Search extends React.Component {
           });
         });
         this.setState({ results });
-        console.log(this.state.results);
       })
       .catch(function(error) {
         console.log(error);
       });
+  };
+
+  handleSave = id => {
+    console.log("working", id);
   };
 
   render() {
@@ -49,34 +55,13 @@ class Search extends React.Component {
           </div>
         </form>
         <ul className="list-group mt-4">
-          <li className="list-group-item list-group-item-action">
-            <div
-              className="btn-group btn-group-sm float-right"
-              role="group"
-              aria-label="Basic example"
-            >
-              <button type="button" className="btn btn-primary">
-                View
-              </button>
-
-              <button type="button" className="btn btn-success">
-                Save
-              </button>
-            </div>
-            <h4>Title of Book</h4>
-            <h5>Authors</h5>
-            <img
-              src="http://placekitten.com/g/100/100"
-              alt="..."
-              className="img-thumbnail float-left"
+          {this.state.results.map(item => (
+            <SearchItems
+              key={item.id}
+              bookData={item}
+              handleSave={this.handleSave}
             />
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
-            dignissimos, est dolorem, quidem repudiandae fugiat debitis
-            architecto odio ad totam provident soluta cupiditate quasi
-            distinctio! Quia, non tempora illum dignissimos molestias aliquid
-            velit obcaecati ut? Dolore amet omnis doloremque laborum voluptates
-            rem optio vero quas tempore nulla, rerum illo fuga?
-          </li>
+          ))}
         </ul>
       </div>
     );
