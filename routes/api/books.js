@@ -11,11 +11,7 @@ router
 
 router.route("/search").post((req, res) => {
   const title = req.body.term;
-  console.log(
-    `https://www.googleapis.com/books/v1/volumes?q=${title}&key=${
-      process.env.GBOOKS_KEY
-    }`
-  );
+
   axios
     .get(
       `https://www.googleapis.com/books/v1/volumes?q=${title}&key=${
