@@ -11,18 +11,21 @@ class Search extends React.Component {
       .post("/api/books/search", { term: this.state.searchTerm })
       .then(response => {
         let results = [];
-
+        console.log(response.data);
         response.data.forEach((book, i) => {
           results.push({
             id: i,
             title: book.volumeInfo.title,
             authors: book.volumeInfo.authors,
             description: book.volumeInfo.description,
-            image: book.volumeInfo.imageLinks.thumbnail,
+            image: book.volumeInfo.imageLinks
+              ? book.volumeInfo.imageLinks.thumbnail
+              : null,
             link: book.volumeInfo.previewLink
           });
         });
         this.setState({ results });
+        this.setState({ searchTerm: "" });
       })
       .catch(function(error) {
         console.log(error);
@@ -32,7 +35,9 @@ class Search extends React.Component {
   handleSave = id => {
     console.log("working", id);
   };
-
+  handleChange = e => {
+    this.setState({ searchTerm: e.target.value });
+  };
   render() {
     return (
       <div>
@@ -41,10 +46,12 @@ class Search extends React.Component {
           <div className="form-group-inline row">
             <div className="col-10">
               <input
+                onChange={this.handleChange}
                 className="form-control mx-3"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={this.state.searchTerm}
               />
             </div>
             <div className="col-2">

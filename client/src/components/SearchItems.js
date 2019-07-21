@@ -28,7 +28,16 @@ export default function SearchItems(props) {
       </div>
       <h4>{title}</h4>
       <h5>{authors}</h5>
-      <img src={image} alt="..." className="img-thumbnail float-left mr-3" />
+
+      <img
+        src={
+          image
+            ? image
+            : "https://imgplaceholder.com/200x200?text=Image+not+available"
+        }
+        alt="..."
+        className="img-thumbnail float-left mr-3"
+      />
       {description}
     </li>
   );
