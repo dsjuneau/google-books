@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const booksController = require("../../controllers/booksController");
+require("dotenv").config();
+const axios = require("axios");
 
 // Matches with "/api/books"
 router
@@ -8,8 +10,24 @@ router
   .post(booksController.create);
 
 router.route("/search").post((req, res) => {
-  console.log(req.body);
-  res.json({ working: "working" });
+  const title = req.body.term;
+  console.log(
+    `https://www.googleapis.com/books/v1/volumes?q=${title}&key=${
+      process.env.GBOOKS_KEY
+    }`
+  );
+  axios
+    .get(
+      `https://www.googleapis.com/books/v1/volumes?q=${title}&key=${
+        process.env.GBOOKS_KEY
+      }`
+    )
+    .then(response => {
+      res.json(response.data.items);
+    })
+    .catch(err => {
+      res.json({ err });
+    });
 });
 
 // Matches with "/api/books/:id"
