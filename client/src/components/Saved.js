@@ -3,7 +3,7 @@ import SavedItems from "./SavedItems";
 import axios from "axios";
 
 class Saved extends React.Component {
-  state = { books: [] };
+  state = { feedback: false, books: [] };
 
   componentDidMount() {
     axios
@@ -22,8 +22,8 @@ class Saved extends React.Component {
       if (id === book._id) {
         axios
           .delete("/api/books/" + id)
-          .then(response => {
-            console.log("deleted", response);
+          .then(() => {
+            this.setState({ feedback: true });
           })
           .catch(function(error) {
             console.log(error);

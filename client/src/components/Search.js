@@ -3,7 +3,7 @@ import axios from "axios";
 import SearchItems from "./SearchItems";
 
 class Search extends React.Component {
-  state = { searchTerm: "you don't know js", results: [] };
+  state = { feedback: false, searchTerm: "you don't know js", results: [] };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -33,6 +33,7 @@ class Search extends React.Component {
 
   handleSave = id => {
     let bookToSave;
+    const booksRemaining = [];
     this.state.results.forEach(book => {
       if (id === book.id) {
         const { title, authors, description, image, link } = book;
@@ -43,12 +44,23 @@ class Search extends React.Component {
           image,
           link
         };
+      } else {
+        const { id, title, authors, description, image, link } = book;
+        booksRemaining.push({
+          id,
+          title,
+          authors,
+          description,
+          image,
+          link
+        });
       }
     });
+    this.setState({ results: booksRemaining });
     axios
       .post("/api/books", { bookToSave })
-      .then(response => {
-        console.log("saved", response);
+      .then(() => {
+        this.setState({ feedback: true });
       })
       .catch(function(error) {
         console.log(error);
@@ -80,6 +92,7 @@ class Search extends React.Component {
             </div>
           </div>
         </form>
+
         <ul className="list-group mt-4">
           {this.state.results.map(item => (
             <SearchItems
