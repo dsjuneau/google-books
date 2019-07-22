@@ -1,6 +1,13 @@
 import React from "react";
 
 export default function Saved() {
+  // class component
+  //oncomponentdidmount search database and add to state variable
+
+  //state holds array of saved books
+  //Handle delete
+  //Saved items component
+
   return (
     <div>
       <h3 className="mx-3">Saved Books</h3>
