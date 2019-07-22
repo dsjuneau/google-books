@@ -11,7 +11,6 @@ class Search extends React.Component {
       .post("/api/books/search", { term: this.state.searchTerm })
       .then(response => {
         let results = [];
-        console.log(response.data);
         response.data.forEach((book, i) => {
           results.push({
             id: i,
@@ -33,7 +32,27 @@ class Search extends React.Component {
   };
 
   handleSave = id => {
-    console.log("working", id);
+    let bookToSave;
+    this.state.results.forEach(book => {
+      if (id === book.id) {
+        const { title, authors, description, image, link } = book;
+        bookToSave = {
+          title,
+          authors,
+          description,
+          image,
+          link
+        };
+      }
+    });
+    axios
+      .post("/api/books", { bookToSave })
+      .then(response => {
+        console.log("saved", response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
   handleChange = e => {
     this.setState({ searchTerm: e.target.value });
