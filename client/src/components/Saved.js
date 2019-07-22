@@ -1,46 +1,66 @@
 import React from "react";
+import SavedItems from "./SavedItems";
+import axios from "axios";
 
-export default function Saved() {
-  // class component
-  //oncomponentdidmount search database and add to state variable
+class Saved extends React.Component {
+  state = { books: [] };
 
-  //state holds array of saved books
+  componentDidMount() {
+    axios
+      .get("/api/books")
+      .then(response => {
+        this.setState({ books: response.data });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  handleDelete = id => {
+    const newBooks = [];
+    this.state.books.forEach(book => {
+      if (id === book._id) {
+        axios
+          .delete("/api/books/" + id)
+          .then(response => {
+            console.log("deleted", response);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        const { _id, title, authors, description, image, link } = book;
+        newBooks.push({
+          _id,
+          title,
+          authors,
+          description,
+          image,
+          link
+        });
+      }
+    });
+    this.setState({ books: newBooks });
+  };
+
   //Handle delete
-  //Saved items component
 
-  return (
-    <div>
-      <h3 className="mx-3">Saved Books</h3>
-      <ul className="list-group mt-4">
-        <li className="list-group-item list-group-item-action">
-          <div
-            className="btn-group btn-group-sm float-right"
-            role="group"
-            aria-label="Basic example"
-          >
-            <button type="button" className="btn btn-primary">
-              View
-            </button>
-
-            <button type="button" className="btn btn-danger">
-              Delete
-            </button>
-          </div>
-          <h4>Title of Book</h4>
-          <h5>Authors</h5>
-          <img
-            src="http://placekitten.com/g/100/100"
-            alt="..."
-            className="img-thumbnail float-left"
-          />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
-          dignissimos, est dolorem, quidem repudiandae fugiat debitis architecto
-          odio ad totam provident soluta cupiditate quasi distinctio! Quia, non
-          tempora illum dignissimos molestias aliquid velit obcaecati ut? Dolore
-          amet omnis doloremque laborum voluptates rem optio vero quas tempore
-          nulla, rerum illo fuga?
-        </li>
-      </ul>
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <h3 className="mx-3">Saved Books</h3>
+        <ul className="list-group mt-4">
+          {this.state.books.map(item => (
+            <SavedItems
+              key={item._id}
+              bookData={item}
+              handleDelete={this.handleDelete}
+            />
+          ))}
+        </ul>
+      </div>
+    );
+  }
 }
+
+export default Saved;
