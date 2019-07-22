@@ -1,9 +1,21 @@
 import React from "react";
 import axios from "axios";
 import SearchItems from "./SearchItems";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "20%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
+  }
+};
 
 class Search extends React.Component {
-  state = { feedback: false, searchTerm: "you don't know js", results: [] };
+  state = { modalIsOpen: false, searchTerm: "you don't know js", results: [] };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -60,7 +72,7 @@ class Search extends React.Component {
     axios
       .post("/api/books", { bookToSave })
       .then(() => {
-        this.setState({ feedback: true });
+        this.setState({ modalIsOpen: true });
       })
       .catch(function(error) {
         console.log(error);
@@ -69,6 +81,10 @@ class Search extends React.Component {
   handleChange = e => {
     this.setState({ searchTerm: e.target.value });
   };
+  handleCloseModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
     return (
       <div>
@@ -93,6 +109,15 @@ class Search extends React.Component {
           </div>
         </form>
 
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          ariaHideApp={false}
+          contentLabel="Minimal Modal Example"
+          style={customStyles}
+        >
+          <h1>Book moved to saved items</h1>
+          <button onClick={this.handleCloseModal}>OK</button>
+        </Modal>
         <ul className="list-group mt-4">
           {this.state.results.map(item => (
             <SearchItems
