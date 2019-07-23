@@ -27,6 +27,8 @@ export class App extends Component {
     socket.on("newBook", () => {
       if (!this.state.didEmit) {
         this.setState({ modalIsOpen: true });
+      } else {
+        this.setState({ didEmit: false });
       }
     });
   }
