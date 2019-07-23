@@ -8,15 +8,22 @@ import Saved from "./components/Saved";
 import io from "socket.io-client";
 
 const socket = io();
-socket.on("newBook", () => {
-  console.log("new book added");
-});
 
 export class App extends Component {
-  state = {};
+  state = { didEmit: false };
+
+  componentDidMount() {
+    socket.on("newBook", () => {
+      if (!this.state.didEmit) {
+        console.log("new book added");
+      }
+    });
+  }
 
   handleEmit = () => {
+    this.setState({ didEmit: true });
     socket.emit("newBook");
+    console.log("Setting state");
   };
 
   render() {
