@@ -6,16 +6,27 @@ import Info from "./components/Info";
 import Search from "./components/Search";
 import Saved from "./components/Saved";
 import io from "socket.io-client";
+import Modal from "react-modal";
 
+const customStyles = {
+  content: {
+    top: "20%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
+  }
+};
 const socket = io();
 
 export class App extends Component {
-  state = { didEmit: false };
+  state = { modalIsOpen: false, didEmit: false };
 
   componentDidMount() {
     socket.on("newBook", () => {
       if (!this.state.didEmit) {
-        console.log("new book added");
+        this.setState({ modalIsOpen: true });
       }
     });
   }
@@ -23,15 +34,25 @@ export class App extends Component {
   handleEmit = () => {
     this.setState({ didEmit: true });
     socket.emit("newBook");
-    console.log("Setting state");
   };
-
+  handleCloseModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
   render() {
     return (
       <Router>
         <div>
           <Nav />
           <Info />
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            ariaHideApp={false}
+            contentLabel="Minimal Modal Example"
+            style={customStyles}
+          >
+            <h1>Someone has saved a book</h1>
+            <button onClick={this.handleCloseModal}>OK</button>
+          </Modal>
           <Route path="/" exact component={Saved} />
           <Route
             path="/search/"
