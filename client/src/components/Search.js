@@ -44,6 +44,7 @@ class Search extends React.Component {
   };
 
   handleSave = id => {
+    this.props.handleEmit();
     let bookToSave;
     const booksRemaining = [];
     this.state.results.forEach(book => {
